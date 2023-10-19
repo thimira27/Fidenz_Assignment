@@ -6,7 +6,7 @@
         <!-- Loop through cities to display city cards -->
         <div class="city-card bg-weather-secondary" v-for="city in cities" :key="city.id">
           <!-- City name -->
-          <h2>{{ city.name }}</h2>
+          <!-- <h2>{{ city.name }}</h2> -->
           <!-- Weather description -->
           <p>{{ city.weather[0].description }}</p>
           <!-- Temperature in Celsius -->

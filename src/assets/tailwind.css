@@ -14,19 +14,6 @@
 
 }
 
-/* .city-card {
-
-  width: 100%;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-image: var(--randomBackgroundImage, url('../assets/images/4.png'));
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  
-} */
-
 .city-card:hover {
   border: 3px solid rgb(138, 191, 231);
 }

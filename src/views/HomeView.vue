@@ -1,12 +1,19 @@
 <template>
   <div>
+    <div class="flex justify-center py-4">
+      <input class=" rounded-l pl-5 p-2 w-80 h-10 bg-black" type="text" placeholder="Enter a City" />
+      <button class="bg-indigo-900 text-white font-bold rounded p-2">
+        Add City
+      </button>
+    </div>
     <main class="container mx-auto flex flex-col gap-4 p-4">
       <div class="grid grid-cols-2 gap-4">
         <div v-for="city in cities" :key="city.id"
-          class="city-card text-white bg-black hover:bg-gray-800 hover:text-white transition duration-200 ease-in-out cursor-pointer"
+          class="city-card text-white bg-image-com rounded-b-md rounded-t-md  hover:text-white transition duration-200 ease-in-out cursor-pointer"
           @click="viewCity(city.id)" :class="'bg-image-' + city.id">
           <div class="text-center ">
-            <div class="flex">
+            <!-- <p>{{ city }}</p> -->
+            <div class="flex justify-center">
               <div class="flex-column justify-center items-center p-4">
                 <div class="p-1">
                   <h1 class="text-3xl font-bold">{{ city.name }}</h1>
@@ -19,12 +26,38 @@
                 <h1 class="text-5xl ml-2 p-4">{{ city.main.temp }}°C</h1>
               </div>
             </div>
-            <div class="text-2xl ">
-              {{ city.weather[0].description }}
+            <div class="flex gap-3 text-center items-center justify-center">
+              <div class="text-4xl">
+                <div class="text-center">
+                  <span v-if="city.weather[0].description.includes('clear sky')">
+                    <i class="iconify" data-icon="material-symbols:wb-sunny"></i>
+                  </span>
+                  <span v-else-if="city.weather[0].description.includes('cloud')">
+                    <i class="iconify" data-icon="material-symbols:cloud"></i>
+                  </span>
+                  <span v-else-if="city.weather[0].description.includes('Drizzle')">
+                    <i class="iconify" data-icon="material-symbols:rainy"></i>
+                  </span>
+                  <span v-else-if="city.weather[0].description.includes('light rain')">
+                    <i class="iconify" data-icon="material-symbols:weather-snowy"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="text-2xl ">
+                {{ city.weather[0].description }}
+              </div>
             </div>
             <!-- <div>City ID: {{ city.id }}</div> -->
           </div>
-          <div class="bg-black h-14 mt-4">
+          <div class="bg-black h-14 mt-4 mb-2">
+            <div class="forecast py-4 bg-weather-data text-white rounded-b-md p-1">
+              <ul class="grid grid-cols-4 gap-1 text-xs text-center">
+                <li>Temp Min: {{ city.main.temp_min }}°C</li>
+                <li>Temp Max: {{ city.main.temp_max }}°C</li>
+                <li>Pressure: {{ city.main.pressure }}hPa</li>
+                <li>Humidity: {{ city.main.humidity }}%</li>
+              </ul>
+            </div>
 
           </div>
         </div>
@@ -32,8 +65,6 @@
     </main>
   </div>
 </template>
-
-
 
 
 <script setup>
@@ -45,6 +76,7 @@ import cityIds from "../cities.js";
 const router = useRouter();
 const cities = ref([]);
 const API_KEY = 'e049dbfe0f5f7d97b46dd92189196e29';
+
 
 const fetchCityData = async () => {
   try {
@@ -98,9 +130,18 @@ const viewCity = (cityId) => {
 onMounted(() => {
   fetchCityData();
 });
+
 </script>
 
+
+
 <style lang="scss">
+.bg-image-com {
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
 /* Define background images for each city ID */
 .bg-image-1248991 {
   background-image: url('../assets/images/1.png');
