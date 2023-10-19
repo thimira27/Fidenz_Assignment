@@ -24,7 +24,7 @@ import cityCodes from "../cities.js";
 
 const cities = ref([]);
 let hasMoreThanSevenCities = false;
-const API_KEY = '67bdb64e899e67757ba44c302ec2a856';
+const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
 const fetchWeatherData = async () => {
   try {

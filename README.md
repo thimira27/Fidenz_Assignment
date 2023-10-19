@@ -1,39 +1,51 @@
-# vue-project
+# Project Name
 
-This is a vueJS application to view real time weather of a few cities
+This project is a Vue.js application that displays real-time weather data for multiple cities.
 
+## API Key
 
-My personel Api key is not shared 
-create a .env file in the prject folder (vue-project  ---> .env) like in .example
-Then add your own key to a variable named 
-VITE_APP_API_KEY= 00000000000000
+To run the project, you'll need to set up your own API key:
 
-Add your api key to
+1. Create a `.env` file in the project folder (same level as the Vue.js application)
 
+2. Inside the `.env` file, add your API key like this:
+   ```
+   VITE_APP_API_KEY= ############################
+   ```
 
+3. Replace `############################` with your own API key.
 
-"docker build -t image-1 ."
-(replace image-1 with the image name you want)
+## Running with Docker
 
-"docker run -it -p --rm --name vueapp-1 image-1"
-(replace vueapp-1 with a name you want)
+You can run this project using Docker. Follow these steps:
 
-Then go to the browser and go to "localhost:8080" 
+1. Build the Docker image (replace `image-1` with your desired image name):
+   ```
+   docker build -t image-1 .
+   ```
+
+2. Run the Docker container (replace `vueapp-1` with your desired container name):
+   ```
+   docker run -it -p 8080:8080 --rm --name vueapp-1 image-1
+   ```
+
+3. Open your web browser and visit [http://localhost:8080](http://localhost:8080) to access the project.
 
 ## Project Setup
 
-```sh
-npm install
-```
+To set up the project locally, follow these steps:
 
-### Compile and Hot-Reload for Development
+1. Install project dependencies:
+   ```
+   npm install
+   ```
 
-```sh
-npm run dev
-```
+2. Compile and run the project in development mode with hot-reloading:
+   ```
+   npm run dev
+   ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+3. To compile and minify the project for production:
+   ```
+   npm run build
+   ```

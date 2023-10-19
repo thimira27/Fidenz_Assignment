@@ -75,7 +75,7 @@ import cityIds from "../cities.js";
 
 const router = useRouter();
 const cities = ref([]);
-const API_KEY = 'e049dbfe0f5f7d97b46dd92189196e29';
+const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
 
 const fetchCityData = async () => {
@@ -164,7 +164,7 @@ onMounted(() => {
 }
 
 .bg-image-4930956 {
-  background-image: url('../assets/images/1.png');
+  background-image: url('../assets/images/6.png');
 }
 
 .bg-image-1796236 {
