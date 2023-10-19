@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .container {
-    max-width: 540px;
-  } */
-
 .head_container {
   max-width: 760px;
   padding: "2rem",
@@ -18,26 +14,25 @@
 
 }
 
-.city-card {
+/* .city-card {
 
   width: 100%;
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  background-image: url('./images/back1.png');
+  background-image: var(--randomBackgroundImage, url('../assets/images/4.png'));
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   
-  /* height: 30vh; */
-}
+} */
 
 .city-card:hover {
   border: 3px solid rgb(138, 191, 231);
 }
 
 .backgroud-city {
-  background-image: url('./images/back1.png');
+  /* background-image: url('./images/back1.png'); */
   background-size: contain;
   background-position: top;
   background-repeat: no-repeat;

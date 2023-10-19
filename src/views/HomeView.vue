@@ -1,120 +1,138 @@
 <template>
   <div>
-    <div class="container mx-auto">
-      <main class="flex flex-col gap-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div
-            class="city-card bg-weather-secondary text-black hover:text-white transition duration-200 ease-in-out"
-            v-for="city in weatherData" :key="city.id" @click="previewCity(city.id)">
-            <div class="city-temp ">
-              <h2>
-                {{ city.name }} , {{ city.sys.country }}
-              </h2>
-
-              <p style="font-size: x-large; font-weight: bold;">
-                {{ city.main.temp }}°c
-              </p>
+    <main class="container mx-auto flex flex-col gap-4 p-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div v-for="city in cities" :key="city.id"
+          class="city-card text-white bg-black hover:bg-gray-800 hover:text-white transition duration-200 ease-in-out cursor-pointer"
+          @click="viewCity(city.id)" :class="'bg-image-' + city.id">
+          <div class="text-center ">
+            <div class="flex">
+              <div class="flex-column justify-center items-center p-4">
+                <div class="p-1">
+                  <h1 class="text-3xl font-bold">{{ city.name }}</h1>
+                </div>
+                <div>
+                  <p class="text-sm">{{ city.formattedTime }}</p>
+                </div>
+              </div>
+              <div class="pr-4 pt-3.5">
+                <h1 class="text-5xl ml-2 p-4">{{ city.main.temp }}°C</h1>
+              </div>
             </div>
-            <p>
-              {{ city.formattedTime }}
-            </p>
-            <h4 class="text-white">
-              City ID: {{ city.id }}
-            </h4>
-            <p class="text-white">
-              Discription: {{ city.weather[0].description }}
-            </p>
-
-
+            <div class="text-2xl ">
+              {{ city.weather[0].description }}
+            </div>
+            <!-- <div>City ID: {{ city.id }}</div> -->
+          </div>
+          <div class="bg-black h-14 mt-4">
 
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </div>
 </template>
 
-<script setup>
 
+
+
+<script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import cityCodes from "../cities.js";
+import cityIds from "../cities.js";
 
 const router = useRouter();
-const weatherData = ref([]);
-const formattedTime = ref('');
-let count = false;
+const cities = ref([]);
 const API_KEY = 'e049dbfe0f5f7d97b46dd92189196e29';
 
-console.log(cityCodes);
-
-const fetchWeatherData = async () => {
+const fetchCityData = async () => {
   try {
-    const weatherResponses = await Promise.all(
-      cityCodes.map(cityCode => {
+    // Fetch city data for multiple city IDs concurrently
+    const cityResponses = await Promise.all(
+      cityIds.map(cityId => {
         return axios.get(
-          `http://api.openweathermap.org/data/2.5/weather?id=${cityCode}&units=metric&appid=${API_KEY}`
-
+          `http://api.openweathermap.org/data/2.5/weather?id=${cityId}&units=metric&appid=${API_KEY}`
         );
-      }),
+      })
     );
 
-    weatherData.value = weatherResponses.map(response => {
-      const { dt, id, name, weather, main, sys, } = response.data;
+    // Process the responses and update the cities array
+    cities.value = cityResponses.map(response => {
+      const { dt, id, name, weather, main, sys } = response.data;
 
-      // cal current date & time
-      const localOffset = new Date().getTimezoneOffset() * 60000;
-      const utc = dt * 1000 + localOffset;
-      const localTime = new Date(utc);
+      // Calculate local time
+      const localTime = new Date(dt * 1000 + new Date().getTimezoneOffset() * 60000);
 
-      // Update the formattedTime ref with the local time
-      formattedTime.value = localTime.toLocaleTimeString('en-IN', {
+      // Format the time in a specific way
+      const formattedTime = localTime.toLocaleTimeString('en-IN', {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
-      });
-
-      formattedTime.value += `, ${localTime.toLocaleDateString('en-IN', {
+      }) + `, ${localTime.toLocaleDateString('en-IN', {
         month: 'short',
         day: 'numeric',
       })}`;
+
       return { dt, id, name, weather, main, sys, formattedTime };
     });
 
-    count = weatherData.value.length > 7;
-
   } catch (error) {
-    console.log('Error fetching weather data:', error);
+    console.error('Error fetching city data:', error);
   }
 };
 
-// On mount, to fetch the weather data
-onMounted(async () => {
-  await fetchWeatherData();
-
-  // for each of the responses
-  weatherData.value.forEach((response) => {
-    console.log(`dt: ${response.dt}, id: ${response.id}, name: ${response.name}, description: ${response.weather[0].description}, temp: ${response.main.temp}`);
-    console.log(count)
-  });
-});
-
-// check if the weatherData array is not empty
-// const isWeatherDataFetched = computed(() => {
-//   return count;
-// });
-
-const previewCity = (cityID) => {
-  console.log(cityID);
+// Function to navigate to a city's detailed view
+const viewCity = (cityId) => {
   router.push({
     name: "cityView",
-    params: { city_id: cityID },
+    params: { city_id: cityId },
     query: {
-      id: cityID,
+      id: cityId,
       preview: true,
     }
   });
 };
 
+// Fetch city data on component mount
+onMounted(() => {
+  fetchCityData();
+});
 </script>
+
+<style lang="scss">
+/* Define background images for each city ID */
+.bg-image-1248991 {
+  background-image: url('../assets/images/1.png');
+}
+
+.bg-image-1850147 {
+  background-image: url('../assets/images/2.png');
+}
+
+.bg-image-2644210 {
+  background-image: url('../assets/images/3.png');
+}
+
+.bg-image-2988507 {
+  background-image: url('../assets/images/4.png');
+}
+
+.bg-image-2147714 {
+  background-image: url('../assets/images/5.png');
+}
+
+.bg-image-4930956 {
+  background-image: url('../assets/images/1.png');
+}
+
+.bg-image-1796236 {
+  background-image: url('../assets/images/2.png');
+}
+
+.bg-image-3143244 {
+  background-image: url('../assets/images/3.png');
+}
+
+/* Define more background images for other city IDs */
+</style>
