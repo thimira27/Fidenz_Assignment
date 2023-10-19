@@ -1,24 +1,39 @@
-# project
+# vue-project
 
-## Project setup
-```
-yarn install
+This is a vueJS application to view real time weather of a few cities
+
+
+My personel Api key is not shared 
+create a .env file in the prject folder (vue-project  ---> .env) like in .example
+Then add your own key to a variable named 
+VITE_APP_API_KEY= 00000000000000
+
+Add your api key to
+
+
+
+"docker build -t image-1 ."
+(replace image-1 with the image name you want)
+
+"docker run -it -p --rm --name vueapp-1 image-1"
+(replace vueapp-1 with a name you want)
+
+Then go to the browser and go to "localhost:8080" 
+
+## Project Setup
+
+```sh
+npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+### Compile and Minify for Production
 
-### Lints and fixes files
+```sh
+npm run build
 ```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
