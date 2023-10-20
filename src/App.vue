@@ -2,7 +2,7 @@
   <!-- The main container with a flexible column layout and a background -->
   <div class="flex flex-col min-h-screen bg-weather-main main-background">
     <!-- Include the site navigation component -->
-    <SiteNavigation />
+    <NavigationComponent />
 
     <!-- Router view to display different components based on routing -->
     <RouterView class="flex-1" v-slot="{ Component }">
@@ -24,6 +24,16 @@
 <script setup>
 // Import necessary components and libraries
 import { RouterView } from 'vue-router';
-import SiteNavigation from "./components/SiteNavigation.vue";
-import WeatherCards from './components/WeatherCards.vue';
+import NavigationComponent from "./components/NavigationComponent.vue";
 </script>
+
+
+<style>
+.main-background {
+  background-image: url('./assets/images/background.png');
+  background-size: cover;
+  background-size: top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+</style>

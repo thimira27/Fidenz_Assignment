@@ -41,6 +41,9 @@
                   <span v-else-if="city.weather[0].description.includes('light rain')">
                     <i class="iconify" data-icon="material-symbols:weather-snowy"></i>
                   </span>
+                  <span v-else-if="city.weather[0].description.includes('moderate rain')">
+                    <i class="iconify" data-icon="material-symbols:rainy"></i>
+                  </span>
                 </div>
               </div>
               <div class="text-2xl ">
@@ -117,7 +120,7 @@ const fetchCityData = async () => {
 // Function to navigate to a city's detailed view
 const viewCity = (cityId) => {
   router.push({
-    name: "cityView",
+    name: "LoadCityPage",
     params: { city_id: cityId },
     query: {
       id: cityId,
@@ -140,6 +143,10 @@ onMounted(() => {
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
+}
+
+.city-card:hover {
+  border: 3px solid rgb(138, 191, 231);
 }
 
 /* Define background images for each city ID */

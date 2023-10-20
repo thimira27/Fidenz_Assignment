@@ -39,9 +39,12 @@
                 </span>
                 <span v-else-if="weatherDescription.includes('Drizzle')">
                   <i class="iconify" data-icon="material-symbols:rainy"></i>
-                </span>
+                </span> 
                 <span v-else-if="weatherDescription.includes('light rain')">
                   <i class="iconify" data-icon="material-symbols:weather-snowy"></i>
+                </span>
+                <span v-else-if="weatherDescription.includes('moderate rain')">
+                  <i class="iconify" data-icon="material-symbols:rainy"></i>
                 </span>
               </div>
             </div>
