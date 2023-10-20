@@ -6,13 +6,15 @@
             <CityPageComponent />
             <!-- Fallback content displayed while City Page Component is loading -->
             <template #fallback>
-                <p>Loading</p>
+                <div class="text-center text-3xl text-white">
+                    <p>Loading</p>
+                </div>
             </template>
         </Suspense>
     </div>
 </template>
 
 <script setup>
-    // Import the City Page component from the specified path
-    import CityPageComponent from '../components/CityPageComponent.vue';
+// Import the City Page component from the specified path
+import CityPageComponent from '../components/CityPageComponent.vue';
 </script>
