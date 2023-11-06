@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex justify-center py-4">
-      <input class="rounded-l pl-5 p-2 w-80 h-10 bg-black" type="text" placeholder="Enter a City" />
-      <button class="bg-indigo-900 text-white font-bold rounded p-2">
+      <input v-model="newCity" class="rounded pl-5 p-2 w-80 h-10 bg-white" type="text" placeholder="Enter a City" />
+      <button @click="addCity" class="bg-white text-indigo-900 font-bold rounded p-2 ml-2">
         Add City
       </button>
     </div>
@@ -23,6 +23,7 @@ import CityCard from "../components/CityCardComponent.vue";
 
 const router = useRouter();
 const cities = ref([]);
+const newCity = ref('');
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
 const fetchCityData = async () => {
@@ -55,6 +56,42 @@ const fetchCityData = async () => {
 
       return { dt, id, name, weather, main, sys, formattedTime };
     });
+  } catch (error) {
+    console.error('Error fetching city data:', error);
+  }
+};
+
+const addCity = async () => {
+  if (newCity.value.trim() === '') {
+    return; // Prevent adding empty city names
+  }
+
+  try {
+    // Fetch city data for the new city name
+    const response = await axios.get(
+      `http://api.openweathermap.org/data/2.5/weather?q=${newCity.value}&units=metric&appid=${API_KEY}`
+    );
+
+    // Process the response and add the new city to the cities array
+    const { dt, id, name, weather, main, sys } = response.data;
+
+    // Calculate local time
+    const localTime = new Date(dt * 1000 + new Date().getTimezoneOffset() * 60000);
+
+    // Format the time in a specific way
+    const formattedTime = localTime.toLocaleTimeString('en-IN', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    }) + `, ${localTime.toLocaleDateString('en-IN', {
+      month: 'short',
+      day: 'numeric',
+    })}`;
+
+    cities.value.push({ dt, id, name, weather, main, sys, formattedTime });
+
+    // Clear the input field after adding the city
+    newCity.value = '';
   } catch (error) {
     console.error('Error fetching city data:', error);
   }

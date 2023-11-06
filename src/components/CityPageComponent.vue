@@ -1,35 +1,36 @@
 <template>
   <!-- Main content container -->
   <div class="container mx-auto py-10">
-    <div class="weather-app  p-4 rounded-t-md shadow-md bg-image-com" :class="'bg-image-' + weatherData.id">
+    <div class="weather-app  p-4 rounded-t-md shadow-md bg-image-com" :class="getBackgroundClass(weatherData.id)">
       <!-- City information -->
       <div class="text-left">
         <button class="text-white text-3xl mr-5" @click="goBack">
           <i class="iconify" data-icon="material-symbols:arrow-back-rounded"></i>
         </button>
       </div>
-      <div class="container mx-auto flex flex-col items-center gap-4 text-white py-2 text-3xl">
-        <p>{{ weatherData.name }}, {{ weatherData.sys.country }}</p>
-      </div>
 
-      <!-- Local time -->
-      <div class="container mx-auto flex flex-col items-center gap-4 text-white text-md">
-        <p>{{ formattedTime }}</p>
-      </div>
 
-      <!-- Horizontal separator line -->
-      <div class="current-conditions px-60">
-        <hr class="border border-white border-opacity-20 w-full" />
-      </div>
-
-      <div class="body">
-        <!-- Current weather conditions -->
-        <div class="current-conditions px-20 pb-5 flex-column items-center text-center">
+      <div class="items-center container justify-center">
+        <div class="items-center container justify-center flex gap-24 font-semibold">
           <div>
-            <p class="text-xl font-bold text-white">{{ weatherDescription }}</p>
+            <div class="flex flex-col items-center text-white py-2 text-3xl">
+              <p>{{ weatherData.name }}, {{ weatherData.sys.country }}</p>
+            </div>
+            <!-- Local time -->
+            <div class="container mx-auto flex flex-col items-center text-white text-md">
+              <p>{{ formattedTime }}</p>
+            </div>
           </div>
-          <div class="flex gap-4 justify-center mt-4">
-            <div class="text-8xl">
+          <div class="current-conditions pb-5 flex flex-col items-center text-center">
+            <div>
+              <h1 class="text-6xl text-white">{{ currentTemperature }}°C</h1>
+            </div>
+          </div>
+        </div>
+
+        <div class="items-center container justify-center pb-5 flex gap-20 mt-4">
+          <div class="flex gap-1 text-4xl">
+            <div>
               <div class="text-center text-white">
                 <span v-if="weatherDescription.includes('clear sky')">
                   <i class="iconify" data-icon="material-symbols:wb-sunny"></i>
@@ -39,7 +40,7 @@
                 </span>
                 <span v-else-if="weatherDescription.includes('Drizzle')">
                   <i class="iconify" data-icon="material-symbols:rainy"></i>
-                </span> 
+                </span>
                 <span v-else-if="weatherDescription.includes('light rain')">
                   <i class="iconify" data-icon="material-symbols:weather-snowy"></i>
                 </span>
@@ -48,32 +49,35 @@
                 </span>
               </div>
             </div>
-            <div class="mt-2 ml-4 mr-4 h-25 w-1 bg-white mx-4"></div>
             <div>
-              <h1 class="text-8xl text-white">{{ currentTemperature }}°C</h1>
+              <p class="text-3xl font-semibold text-white">{{ weatherDescription }}</p>
             </div>
           </div>
-        </div>
-
-
-        <!-- Horizontal separator line -->
-        <div class="current-conditions px-20">
-          <hr class="border border-white border-opacity-20 w-full" />
+          <div class="text-center text-white text-xl font-semibold">
+            <div>Temp Min: {{ minTemperature }}°C</div>
+            <div>Temp Max: {{ maxTemperature }}°C</div>
+          </div>
         </div>
       </div>
+
     </div>
 
     <!-- Forecast information -->
-    <div class="forecast py-4 bg-weather-data text-white rounded-b-md">
-      <ul class="grid grid-cols-4 gap-1 text-center">
-        <li>Temp Min: {{ minTemperature }}°C</li>
-        <li>Temp Max: {{ maxTemperature }}°C</li>
-        <li>Pressure: {{ pressure }}hPa</li>
-        <li>Humidity: {{ humidity }}%</li>
-        <li>Visibility: {{ visibility }}</li>
-        <li>Wind: {{ windSpeed }}m/s {{ windDirection }}°</li>
-        <li>Sunrise: {{ formattedSunrise }}</li>
-        <li>Sunset: {{ formattedSunset }}</li>
+    <div class="forecast py-4 bg-weather-data text-white rounded-b-md justify-center">
+      <ul class="grid grid-cols-3 gap-1 text-center">
+        <div>
+          <li>Pressure: {{ pressure }}hPa</li>
+          <li>Humidity: {{ humidity }}%</li>
+          <li>Visibility: {{ visibility }}</li>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <i class="iconify" data-icon="material-symbols:north-east-rounded"></i>
+          <li class="mt-2">{{ windSpeed }} m/s {{ windDirection }} degree</li>
+        </div>
+        <div>
+          <li>Sunrise: {{ formattedSunrise }}</li>
+          <li>Sunset: {{ formattedSunset }}</li>
+        </div>
       </ul>
     </div>
   </div>
@@ -153,6 +157,16 @@ const humidity = ref(weatherData.main.humidity);
 const visibility = ref(weatherData.visibility);
 const windSpeed = ref(weatherData.wind.speed);
 const windDirection = ref(weatherData.wind.deg);
+
+// Function to get the background class based on weatherData.id
+const getBackgroundClass = (id) => {
+  if (id === 1248991 || id === 1850147 || id === 2644210 || id === 2988507 || id === 2147714 || id === 4930956 || id === 1796236 || id === 3143244) {
+    return 'bg-image-' + id;
+  } else {
+    return 'bg-image-5'; // Default background class
+  }
+};
+
 </script>
 
 
@@ -198,5 +212,7 @@ const windDirection = ref(weatherData.wind.deg);
   background-image: url('../assets/images/3.png');
 }
 
-/* Define more background images for other city IDs */
+.bg-image-5 {
+  background-image: url('../assets/images/4.png');
+}
 </style>
