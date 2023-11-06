@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-center py-4">
       <input v-model="newCity" class="rounded pl-5 p-2 w-80 h-10 bg-white" type="text" placeholder="Enter a City" />
-      <button @click="addCity" class="bg-white text-indigo-900 font-bold rounded p-2 ml-2">
+      <button @click="addNewCity" class="bg-white text-indigo-900 font-bold rounded p-2 ml-2">
         Add City
       </button>
     </div>
@@ -20,80 +20,32 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import cityIds from "../cities.js";
 import CityCard from "../components/CityCardComponent.vue";
+import { fetchCityData, addCity } from "../ApiConnecter/weatherAPI";
 
 const router = useRouter();
 const cities = ref([]);
 const newCity = ref('');
-const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
-const fetchCityData = async () => {
+const fetchInitialCityData = async () => {
   try {
-    // Fetch city data for multiple city IDs concurrently
-    const cityResponses = await Promise.all(
-      cityIds.map(cityId => {
-        return axios.get(
-          `http://api.openweathermap.org/data/2.5/weather?id=${cityId}&units=metric&appid=${API_KEY}`
-        );
-      })
-    );
-
-    // Process the responses and update the cities array
-    cities.value = cityResponses.map(response => {
-      const { dt, id, name, weather, main, sys } = response.data;
-
-      // Calculate local time
-      const localTime = new Date(dt * 1000 + new Date().getTimezoneOffset() * 60000);
-
-      // Format the time in a specific way
-      const formattedTime = localTime.toLocaleTimeString('en-IN', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-      }) + `, ${localTime.toLocaleDateString('en-IN', {
-        month: 'short',
-        day: 'numeric',
-      })}`;
-
-      return { dt, id, name, weather, main, sys, formattedTime };
-    });
+    const responses = await Promise.all(cityIds.map(fetchCityData));
+    cities.value = responses;
   } catch (error) {
-    console.error('Error fetching city data:', error);
+    console.error('Error fetching initial city data:', error);
   }
 };
 
-const addCity = async () => {
+const addNewCity = async () => {
   if (newCity.value.trim() === '') {
     return; // Prevent adding empty city names
   }
 
   try {
-    // Fetch city data for the new city name
-    const response = await axios.get(
-      `http://api.openweathermap.org/data/2.5/weather?q=${newCity.value}&units=metric&appid=${API_KEY}`
-    );
-
-    // Process the response and add the new city to the cities array
-    const { dt, id, name, weather, main, sys } = response.data;
-
-    // Calculate local time
-    const localTime = new Date(dt * 1000 + new Date().getTimezoneOffset() * 60000);
-
-    // Format the time in a specific way
-    const formattedTime = localTime.toLocaleTimeString('en-IN', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    }) + `, ${localTime.toLocaleDateString('en-IN', {
-      month: 'short',
-      day: 'numeric',
-    })}`;
-
-    cities.value.push({ dt, id, name, weather, main, sys, formattedTime });
-
-    // Clear the input field after adding the city
-    newCity.value = '';
+    const newCityData = await addCity(newCity.value);
+    cities.value.push(newCityData);
+    newCity.value = ''; // Clear the input field
   } catch (error) {
-    console.error('Error fetching city data:', error);
+    console.error('Error adding a new city:', error);
   }
 };
 
@@ -109,7 +61,7 @@ const viewCity = (cityId) => {
 };
 
 onMounted(() => {
-  fetchCityData();
+  fetchInitialCityData();
 });
 </script>
 
