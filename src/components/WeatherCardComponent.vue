@@ -21,10 +21,11 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import cityCodes from "../cities.js";
+import * as constants from '../ApiConnecter/constants';
 
 const cities = ref([]);
 let hasMoreThanSevenCities = false;
-const API_KEY = import.meta.env.VITE_APP_API_KEY;
+const API_KEY = constants.API_KEY;
 
 const fetchWeatherData = async () => {
   try {
@@ -32,7 +33,7 @@ const fetchWeatherData = async () => {
     const weatherResponses = await Promise.all(
       cityCodes.map((cityCode) => {
         return axios.get(
-          `http://api.openweathermap.org/data/2.5/weather?id=${cityCode}&units=metric&appid=${API_KEY}`
+          `${constants.WEATHER_API_BASE_URL}/weather?id=${cityCode}&units=metric&appid=${API_KEY}`
         );
       })
     );

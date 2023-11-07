@@ -185,6 +185,18 @@ const getWeatherIconClass = (description) => {
   background-repeat: no-repeat;
 }
 
+/* Add responsive styles */
+@media (max-width: 640px) {
+  .bg-image-com {
+    background-size: contain;
+  }
+}
+@media (min-width: 1024px) {
+  .bg-image-com {
+    background-size: cover;
+  }
+}
+
 .bg-image-1248991 {
   background-image: url("../assets/images/1.png");
 }

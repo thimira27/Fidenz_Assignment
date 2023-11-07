@@ -75,4 +75,16 @@ onMounted(() => {
 .city-card:hover {
   border: 3px solid rgb(138, 191, 231);
 }
+
+/* Add responsive styles */
+@media (max-width: 640px) {
+  .bg-image-com {
+    background-size: contain;
+  }
+}
+@media (min-width: 1024px) {
+  .bg-image-com {
+    background-size: cover;
+  }
+}
 </style>

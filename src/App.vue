@@ -14,7 +14,7 @@
     </RouterView>
 
     <!-- Footer section with a black background and white text -->
-    <div class="footer bg-black text-white pt-3 text-center mt-20 h-20 pr-5">
+    <div class="footer bg-black text-white py-3 text-center mt-6">
       <!-- Copyright information -->
       <p>2023 - Fidenz Technologies</p>
     </div>
@@ -32,8 +32,20 @@ import NavigationComponent from "./components/NavigationComponent.vue";
 .main-background {
   background-image: url('./assets/images/background.png');
   background-size: cover;
-  background-size: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+/* Add responsive styles */
+@media (max-width: 640px) {
+  .main-background {
+    background-size: contain;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-background {
+    background-size: cover;
+  }
 }
 </style>
