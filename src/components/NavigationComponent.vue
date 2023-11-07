@@ -6,7 +6,7 @@
                 <!-- Create a link to the 'home' route using RouterLink -->
                 <RouterLink :to="{ name: 'home' }">
                     <!-- Display a sun icon and the text 'Weather App' -->
-                    <div class="flex gap-2 mt-4 ">
+                    <div class="flex gap-2 mt-4">
                         <span class="iconify" data-icon="material-symbols:partly-cloudy-day-rounded"
                             data-inline="false"></span>
                         <h4>Weather App</h4>
@@ -17,14 +17,13 @@
     </header>
 </template>
 
-
 <script setup>
-import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
+import { RouterLink } from "vue-router";
+import { ref } from "vue";
 
 const hideTitle = ref(false);
 
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
     const scrollY = window.scrollY;
     hideTitle.value = scrollY > 0;
 });

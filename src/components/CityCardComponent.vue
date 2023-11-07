@@ -52,7 +52,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     props: {
@@ -60,9 +60,8 @@ export default {
     },
     methods: {
         viewCity() {
-            this.$emit('viewCity', this.city.id);
+            this.$emit("viewCity", this.city.id);
         },
     },
 };
 </script>
-  

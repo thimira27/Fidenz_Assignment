@@ -1,14 +1,13 @@
 <template>
   <!-- Main content container -->
   <div class="container mx-auto py-10">
-    <div class="weather-app  p-4 rounded-t-md shadow-md bg-image-com" :class="getBackgroundClass(weatherData.id)">
+    <div class="weather-app p-4 rounded-t-md shadow-md bg-image-com" :class="getBackgroundClass(weatherData.id)">
       <!-- City information -->
       <div class="text-left">
         <button class="text-white text-3xl mr-5" @click="goBack">
           <i class="iconify" data-icon="material-symbols:arrow-back-rounded"></i>
         </button>
       </div>
-
 
       <div class="items-center container justify-center">
         <div class="items-center container justify-center flex gap-24 font-semibold">
@@ -50,7 +49,9 @@
               </div>
             </div>
             <div>
-              <p class="text-3xl font-semibold text-white">{{ weatherDescription }}</p>
+              <p class="text-3xl font-semibold text-white">
+                {{ weatherDescription }}
+              </p>
             </div>
           </div>
           <div class="text-center text-white text-xl font-semibold">
@@ -59,7 +60,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Forecast information -->
@@ -82,18 +82,17 @@
     </div>
   </div>
 </template>
-  
-<script setup>
-import axios from 'axios';
-import { useRoute, useRouter } from 'vue-router';
-import { ref } from 'vue';
 
+<script setup>
+import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
 
 // Current time and formatted times
 const currentTime = ref(new Date().toLocaleTimeString());
-const formattedTime = ref('');
-const formattedSunrise = ref('');
-const formattedSunset = ref('');
+const formattedTime = ref("");
+const formattedSunrise = ref("");
+const formattedSunset = ref("");
 
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 const route = useRoute();
@@ -119,19 +118,23 @@ const getWeatherData = async () => {
     const weatherData = response.data;
     const localOffset = new Date().getTimezoneOffset() * 60000;
     const localTime = new Date(weatherData.dt * 1000 + localOffset);
-    const localTimeSunrise = new Date(weatherData.sys.sunrise * 1000 + localOffset);
-    const localTimeSunset = new Date(weatherData.sys.sunset * 1000 + localOffset);
+    const localTimeSunrise = new Date(
+      weatherData.sys.sunrise * 1000 + localOffset
+    );
+    const localTimeSunset = new Date(
+      weatherData.sys.sunset * 1000 + localOffset
+    );
 
-    const istFormatter = new Intl.DateTimeFormat('en-IN', {
-      hour: 'numeric',
-      minute: 'numeric',
+    const istFormatter = new Intl.DateTimeFormat("en-IN", {
+      hour: "numeric",
+      minute: "numeric",
       hour12: true,
     });
 
     formattedTime.value = istFormatter.format(localTime);
-    formattedTime.value += `, ${localTime.toLocaleDateString('en-IN', {
-      month: 'short',
-      day: 'numeric',
+    formattedTime.value += `, ${localTime.toLocaleDateString("en-IN", {
+      month: "short",
+      day: "numeric",
     })}`;
 
     formattedSunrise.value = istFormatter.format(localTimeSunrise);
@@ -139,7 +142,7 @@ const getWeatherData = async () => {
 
     return weatherData;
   } catch (error) {
-    console.error('Error fetching weather data:', error);
+    console.error("Error fetching weather data:", error);
   }
 };
 
@@ -160,15 +163,22 @@ const windDirection = ref(weatherData.wind.deg);
 
 // Function to get the background class based on weatherData.id
 const getBackgroundClass = (id) => {
-  if (id === 1248991 || id === 1850147 || id === 2644210 || id === 2988507 || id === 2147714 || id === 4930956 || id === 1796236 || id === 3143244) {
-    return 'bg-image-' + id;
+  if (
+    id === 1248991 ||
+    id === 1850147 ||
+    id === 2644210 ||
+    id === 2988507 ||
+    id === 2147714 ||
+    id === 4930956 ||
+    id === 1796236 ||
+    id === 3143244
+  ) {
+    return "bg-image-" + id;
   } else {
-    return 'bg-image-5'; // Default background class
+    return "bg-image-5"; // Default background class
   }
 };
-
 </script>
-
 
 <style lang="scss">
 /* Define background images for each city ID */
@@ -180,39 +190,38 @@ const getBackgroundClass = (id) => {
 }
 
 .bg-image-1248991 {
-  background-image: url('../assets/images/1.png');
-
+  background-image: url("../assets/images/1.png");
 }
 
 .bg-image-1850147 {
-  background-image: url('../assets/images/2.png');
+  background-image: url("../assets/images/2.png");
 }
 
 .bg-image-2644210 {
-  background-image: url('../assets/images/3.png');
+  background-image: url("../assets/images/3.png");
 }
 
 .bg-image-2988507 {
-  background-image: url('../assets/images/4.png');
+  background-image: url("../assets/images/4.png");
 }
 
 .bg-image-2147714 {
-  background-image: url('../assets/images/5.png');
+  background-image: url("../assets/images/5.png");
 }
 
 .bg-image-4930956 {
-  background-image: url('../assets/images/6.png');
+  background-image: url("../assets/images/6.png");
 }
 
 .bg-image-1796236 {
-  background-image: url('../assets/images/2.png');
+  background-image: url("../assets/images/2.png");
 }
 
 .bg-image-3143244 {
-  background-image: url('../assets/images/3.png');
+  background-image: url("../assets/images/3.png");
 }
 
 .bg-image-5 {
-  background-image: url('../assets/images/4.png');
+  background-image: url("../assets/images/4.png");
 }
 </style>
