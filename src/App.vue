@@ -14,7 +14,7 @@
     </RouterView>
 
     <!-- Footer section with a black background and white text -->
-    <div class="footer bg-black text-white py-3 text-center mt-6">
+    <div class="footer bg-black text-white py-6 text-center mt-6">
       <!-- Copyright information -->
       <p>2023 - Fidenz Technologies</p>
     </div>

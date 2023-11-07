@@ -82,6 +82,7 @@ onMounted(() => {
     background-size: contain;
   }
 }
+
 @media (min-width: 1024px) {
   .bg-image-com {
     background-size: cover;

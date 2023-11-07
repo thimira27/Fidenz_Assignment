@@ -1,9 +1,10 @@
 <template>
+  <!-- Main weather information container -->
   <div class="container mx-auto py-10">
     <div class="weather-app p-4 rounded-t-md shadow-md bg-image-com" :class="getBackgroundClass(weatherData.id)">
       <div class="text-left">
         <button class="text-white text-3xl mr-5" @click="goBack">
-          <i class="iconify" data-icon="material-symbols:arrow-back-rounded"></i>
+          <i class="iconify" data-icon="material-symbols:arrow-back-rounded"></i> <!-- Go back button -->
         </button>
       </div>
 
@@ -11,15 +12,15 @@
         <div class="items-center container justify-center flex gap-24 font-semibold">
           <div>
             <div class="flex flex-col items-center text-white py-2 text-3xl">
-              <p>{{ weatherData.name }}, {{ weatherData.sys.country }}</p>
+              <p>{{ weatherData.name }}, {{ weatherData.sys.country }}</p> <!-- City name and country -->
             </div>
             <div class="container mx-auto flex flex-col items-center text-white text-md">
-              <p>{{ formattedTime }}</p>
+              <p>{{ formattedTime }}</p> <!-- Local time -->
             </div>
           </div>
           <div class="current-conditions pb-5 flex flex-col items-center text-center">
             <div>
-              <h1 class="text-6xl text-white">{{ currentTemperature }}°C</h1>
+              <h1 class="text-6xl text-white">{{ currentTemperature }}°C</h1> <!-- Current temperature -->
             </div>
           </div>
         </div>
@@ -28,21 +29,21 @@
           <div class="flex gap-1 text-4xl">
             <div>
               <div>
-                <img :src="getWeatherIconUrl(weatherData.weather[0].icon)" alt="Weather Icon" />
+                <img :src="getWeatherIconUrl(weatherData.weather[0].icon)" alt="Weather Icon" /> <!-- Weather icon -->
               </div>
               <div class="text-center text-white">
-                <i :class="getWeatherIconClass(weatherDescription)"></i>
+                <i :class="getWeatherIconClass(weatherDescription)"></i> <!-- Weather icon class -->
               </div>
             </div>
             <div>
               <p class="text-3xl font-semibold text-white">
-                {{ weatherDescription }}
+                {{ weatherDescription }} <!-- Weather description -->
               </p>
             </div>
           </div>
           <div class="text-center text-white text-xl font-semibold">
-            <div>Temp Min: {{ minTemperature }}°C</div>
-            <div>Temp Max: {{ maxTemperature }}°C</div>
+            <div>Temp Min: {{ minTemperature }}°C</div> <!-- Minimum temperature -->
+            <div>Temp Max: {{ maxTemperature }}°C</div> <!-- Maximum temperature -->
           </div>
         </div>
       </div>
@@ -51,17 +52,17 @@
     <div class="forecast py-4 bg-weather-data text-white rounded-b-md justify-center">
       <ul class="grid grid-cols-3 gap-1 text-center">
         <div>
-          <li>Pressure: {{ pressure }}hPa</li>
-          <li>Humidity: {{ humidity }}%</li>
-          <li>Visibility: {{ visibility }}</li>
+          <li>Pressure: {{ pressure }}hPa</li> <!-- Pressure -->
+          <li>Humidity: {{ humidity }}%</li> <!-- Humidity -->
+          <li>Visibility: {{ visibility }}</li> <!-- Visibility -->
         </div>
         <div class="flex flex-col items-center justify-center">
           <i class="iconify" data-icon="material-symbols:north-east-rounded"></i>
-          <li class="mt-2">{{ windSpeed }} m/s {{ windDirection }} degree</li>
+          <li class="mt-2">{{ windSpeed }} m/s {{ windDirection }} degree</li> <!-- Wind speed and direction -->
         </div>
         <div>
-          <li>Sunrise: {{ formattedSunrise }}</li>
-          <li>Sunset: {{ formattedSunset }}</li>
+          <li>Sunrise: {{ formattedSunrise }}</li> <!-- Sunrise time -->
+          <li>Sunset: {{ formattedSunset }}</li> <!-- Sunset time -->
         </div>
       </ul>
     </div>
@@ -76,16 +77,16 @@ import * as constants from '../ApiConnecter/constants';
 
 const { API_KEY, WEATHER_ICON_URL, DEFAULT_BACKGROUND_CLASS, WEATHER_ICONS } = constants;
 
-// const currentTime = ref(new Date().toLocaleTimeString());
-const formattedTime = ref("");
+const formattedTime = ref(""); // Initialize time-related variables
 const formattedSunrise = ref("");
 const formattedSunset = ref("");
 
 const route = useRoute();
 const router = useRouter();
 const cityId = route.query.id;
+
 const goBack = () => {
-  router.back();
+  router.back(); // Go back to the previous page
 };
 
 const getWeatherData = async () => {
@@ -125,9 +126,9 @@ const getWeatherData = async () => {
   }
 };
 
-const weatherData = await getWeatherData();
+const weatherData = await getWeatherData(); // Fetch weather data
 
-const currentTemperature = ref(weatherData.main.temp);
+const currentTemperature = ref(weatherData.main.temp); // Extract and set weather data variables
 const weatherDescription = ref(weatherData.weather[0].description);
 const minTemperature = ref(weatherData.main.temp_min);
 const maxTemperature = ref(weatherData.main.temp_max);
@@ -150,12 +151,12 @@ const getBackgroundClass = (id) => {
   ) {
     return "bg-image-" + id;
   } else {
-    return DEFAULT_BACKGROUND_CLASS;
+    return DEFAULT_BACKGROUND_CLASS; // Default background class
   }
 };
 
 const getWeatherIconUrl = (icon) => {
-  return `${WEATHER_ICON_URL}${icon}.png`;
+  return `${WEATHER_ICON_URL}${icon}.png`; // Generate weather icon URL
 };
 
 const getWeatherIconClass = (description) => {
@@ -170,7 +171,7 @@ const getWeatherIconClass = (description) => {
   } else if (description.includes('moderate rain')) {
     return WEATHER_ICONS.rainy;
   } else {
-    return DEFAULT_WEATHER_ICON;
+    return DEFAULT_WEATHER_ICON; // Default weather icon class
   }
 };
 </script>
@@ -191,6 +192,7 @@ const getWeatherIconClass = (description) => {
     background-size: contain;
   }
 }
+
 @media (min-width: 1024px) {
   .bg-image-com {
     background-size: cover;

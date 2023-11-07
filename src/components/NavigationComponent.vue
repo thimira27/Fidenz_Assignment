@@ -16,7 +16,7 @@
         </div>
     </header>
 </template>
-
+  
 <script setup>
 import { RouterLink } from "vue-router";
 import { ref } from "vue";
@@ -25,7 +25,7 @@ const hideTitle = ref(false);
 
 window.addEventListener("scroll", () => {
     const scrollY = window.scrollY;
-    hideTitle.value = scrollY > 0;
+    hideTitle.value = scrollY > 0; // Hide the title when scrolling down
 });
 </script>
 
@@ -38,3 +38,5 @@ window.addEventListener("scroll", () => {
     opacity: 0;
 }
 </style>
+  
+
