@@ -1,8 +1,6 @@
 <template>
-  <!-- Main content container -->
   <div class="container mx-auto py-10">
     <div class="weather-app p-4 rounded-t-md shadow-md bg-image-com" :class="getBackgroundClass(weatherData.id)">
-      <!-- City information -->
       <div class="text-left">
         <button class="text-white text-3xl mr-5" @click="goBack">
           <i class="iconify" data-icon="material-symbols:arrow-back-rounded"></i>
@@ -15,7 +13,6 @@
             <div class="flex flex-col items-center text-white py-2 text-3xl">
               <p>{{ weatherData.name }}, {{ weatherData.sys.country }}</p>
             </div>
-            <!-- Local time -->
             <div class="container mx-auto flex flex-col items-center text-white text-md">
               <p>{{ formattedTime }}</p>
             </div>
@@ -30,22 +27,11 @@
         <div class="items-center container justify-center pb-5 flex gap-20 mt-4">
           <div class="flex gap-1 text-4xl">
             <div>
+              <div>
+                <img :src="getWeatherIconUrl(weatherData.weather[0].icon)" alt="Weather Icon" />
+              </div>
               <div class="text-center text-white">
-                <span v-if="weatherDescription.includes('clear sky')">
-                  <i class="iconify" data-icon="material-symbols:wb-sunny"></i>
-                </span>
-                <span v-else-if="weatherDescription.includes('cloud')">
-                  <i class="iconify" data-icon="material-symbols:cloud"></i>
-                </span>
-                <span v-else-if="weatherDescription.includes('Drizzle')">
-                  <i class="iconify" data-icon="material-symbols:rainy"></i>
-                </span>
-                <span v-else-if="weatherDescription.includes('light rain')">
-                  <i class="iconify" data-icon="material-symbols:weather-snowy"></i>
-                </span>
-                <span v-else-if="weatherDescription.includes('moderate rain')">
-                  <i class="iconify" data-icon="material-symbols:rainy"></i>
-                </span>
+                <i :class="getWeatherIconClass(weatherDescription)"></i>
               </div>
             </div>
             <div>
@@ -62,7 +48,6 @@
       </div>
     </div>
 
-    <!-- Forecast information -->
     <div class="forecast py-4 bg-weather-data text-white rounded-b-md justify-center">
       <ul class="grid grid-cols-3 gap-1 text-center">
         <div>
@@ -87,34 +72,28 @@
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
+import * as constants from '../ApiConnecter/constants';
 
-// Current time and formatted times
-const currentTime = ref(new Date().toLocaleTimeString());
+const { API_KEY, WEATHER_ICON_URL, DEFAULT_BACKGROUND_CLASS, WEATHER_ICONS } = constants;
+
+// const currentTime = ref(new Date().toLocaleTimeString());
 const formattedTime = ref("");
 const formattedSunrise = ref("");
 const formattedSunset = ref("");
 
-const API_KEY = import.meta.env.VITE_APP_API_KEY;
 const route = useRoute();
 const router = useRouter();
-
-// Extract cityId and cityInfo from the route
 const cityId = route.query.id;
-const cityInfo = ref(`${route.params.cityName}, ${route.params.country}`);
-
 const goBack = () => {
   router.back();
 };
 
-// Function to fetch weather data
 const getWeatherData = async () => {
   try {
-    // Make an API request to fetch weather data for the city
     const response = await axios.get(
       `http://api.openweathermap.org/data/2.5/weather?id=${cityId}&units=metric&appid=${API_KEY}`
     );
 
-    // Process the weather data and update the time values
     const weatherData = response.data;
     const localOffset = new Date().getTimezoneOffset() * 60000;
     const localTime = new Date(weatherData.dt * 1000 + localOffset);
@@ -146,11 +125,8 @@ const getWeatherData = async () => {
   }
 };
 
-// Fetch weather data and icon URL
 const weatherData = await getWeatherData();
-const iconUrl = `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`;
 
-// Weather data variables
 const currentTemperature = ref(weatherData.main.temp);
 const weatherDescription = ref(weatherData.weather[0].description);
 const minTemperature = ref(weatherData.main.temp_min);
@@ -161,7 +137,6 @@ const visibility = ref(weatherData.visibility);
 const windSpeed = ref(weatherData.wind.speed);
 const windDirection = ref(weatherData.wind.deg);
 
-// Function to get the background class based on weatherData.id
 const getBackgroundClass = (id) => {
   if (
     id === 1248991 ||
@@ -175,10 +150,31 @@ const getBackgroundClass = (id) => {
   ) {
     return "bg-image-" + id;
   } else {
-    return "bg-image-5"; // Default background class
+    return DEFAULT_BACKGROUND_CLASS;
+  }
+};
+
+const getWeatherIconUrl = (icon) => {
+  return `${WEATHER_ICON_URL}${icon}.png`;
+};
+
+const getWeatherIconClass = (description) => {
+  if (description.includes('clear sky')) {
+    return WEATHER_ICONS.sunny;
+  } else if (description.includes('cloud')) {
+    return WEATHER_ICONS.cloudy;
+  } else if (description.includes('Drizzle')) {
+    return WEATHER_ICONS.rainy;
+  } else if (description.includes('light rain')) {
+    return WEATHER_ICONS.snowy;
+  } else if (description.includes('moderate rain')) {
+    return WEATHER_ICONS.rainy;
+  } else {
+    return DEFAULT_WEATHER_ICON;
   }
 };
 </script>
+
 
 <style lang="scss">
 /* Define background images for each city ID */
